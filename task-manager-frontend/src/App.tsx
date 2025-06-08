@@ -1,13 +1,41 @@
-import React from 'react';
+import { useState } from "react";
+import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import './App.css';
-
+type Task = {
+  id: number;
+  title: string;
+  description?: string;
+  completed: boolean;
+  priority: "low" | "medium" | "high";
+  reminder?: string;
+};
 
 export default function App() {
+  const [refresh, setRefresh] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-indigo-700">
-      <h1 className="text-4xl font-bold text-white">🎉 Tailwind fonctionne !</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <ToastContainer />
+      <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8">
+        <h1 className="text-3xl font-extrabold mb-4 text-center text-indigo-700 tracking-tight drop-shadow">
+          Gestionnaire de tâches
+        </h1>
+        <TaskForm
+          onAdd={() => {
+            setRefresh((r) => !r);
+            setTaskToEdit(null);
+          }}
+          taskToEdit={taskToEdit}
+        />
+        <TaskList
+          key={String(refresh)}
+          setTaskToEdit={setTaskToEdit}
+        />
+      </div>
     </div>
   );
 }
-

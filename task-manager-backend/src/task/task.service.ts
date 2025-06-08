@@ -10,7 +10,7 @@ export class TaskService {
   constructor(
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
-  ) {}
+  ) { }
 
   create(createTaskDto: CreateTaskDto) {
     const task = this.taskRepository.create(createTaskDto);
@@ -28,7 +28,7 @@ export class TaskService {
   update(id: number, updateTaskDto: UpdateTaskDto) {
     return this.taskRepository.update(id, updateTaskDto);
   }
-
+  
   remove(id: number) {
     return this.taskRepository.delete(id);
   }
