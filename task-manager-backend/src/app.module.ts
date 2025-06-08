@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaskModule } from './task/task.module'; // ← AJOUT
 
+// Module principal de l'application.
+// Il configure la connexion à la base de données et importe les modules nécessaires.
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -17,6 +19,7 @@ import { TaskModule } from './task/task.module'; // ← AJOUT
       synchronize: true, // désactivez en production
     }),
     TaskModule, // ← AJOUT
+  // Importation du module TaskModule qui gère les tâches
   ],
   controllers: [AppController],
   providers: [AppService],

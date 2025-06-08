@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+// Ce composant affiche la liste des tâches et permet de les supprimer, éditer ou marquer comme terminées.
+// Il gère l'état local des tâches et le chargement, et effectue les appels API pour interagir avec le backend.
+
 type Task = {
   id: number;
   title: string;
@@ -14,6 +17,7 @@ type TaskListProps = {
   setTaskToEdit: (task: Task) => void;
 };
 
+// Retourne la classe CSS à appliquer selon la priorité de la tâche
 function priorityBadgeClass(priority: string) {
   switch (priority) {
     case "high":
@@ -31,11 +35,13 @@ export default function TaskList({ setTaskToEdit }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Appelé au montage du composant pour charger les tâches depuis l'API
   useEffect(() => {
     fetchTasks();
     // eslint-disable-next-line
   }, []);
 
+  // Récupère toutes les tâches depuis l'API
   function fetchTasks() {
     setLoading(true);
     fetch("http://localhost:3000/tasks")
@@ -44,6 +50,7 @@ export default function TaskList({ setTaskToEdit }: TaskListProps) {
       .finally(() => setLoading(false));
   }
 
+  // Supprime une tâche via l'API puis recharge la liste
   function handleDelete(id: number) {
     fetch(`http://localhost:3000/tasks/${id}`, { method: "DELETE" })
       .then(() => {
@@ -52,6 +59,7 @@ export default function TaskList({ setTaskToEdit }: TaskListProps) {
       });
   }
 
+  // Change le statut (terminée/à faire) d'une tâche via l'API puis recharge la liste
   function handleToggleComplete(task: Task) {
     fetch(`http://localhost:3000/tasks/${task.id}`, {
       method: "PUT",
@@ -132,3 +140,12 @@ export default function TaskList({ setTaskToEdit }: TaskListProps) {
     </div>
   );
 }
+
+// ---
+// Liste des fonctions/hooks utilisés dans ce composant :
+//
+// - useState : Hook React pour gérer l'état local (ici, la liste des tâches et l'état de chargement).
+// - useEffect : Hook React pour exécuter du code au montage du composant (ici, charger les tâches au démarrage).
+// - toast (de react-toastify) : Fonction pour afficher des notifications à l'utilisateur (suppression, statut, etc.).
+//
+// Ces hooks permettent de rendre le composant interactif et réactif aux changements de données et d'afficher des messages utilisateur.

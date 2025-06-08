@@ -1,3 +1,9 @@
+/* 
+  Ce fichier contient les styles globaux de l'application React.
+  Il utilise Tailwind CSS pour la base, les composants et les utilitaires.
+  Les classes personnalisées (.App, .App-logo, .App-header, etc.) sont héritées du template Create React App.
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -40,3 +46,13 @@
     transform: rotate(360deg);
   }
 }
+
+/*
+Liste des fonctionnalités/styles utilisés :
+- @tailwind base/components/utilities : import des styles Tailwind CSS.
+- .App, .App-logo, .App-header, .App-link : styles personnalisés pour la structure de l'app.
+- @keyframes App-logo-spin : animation CSS pour le logo.
+- @media (prefers-reduced-motion) : accessibilité pour réduire les animations si besoin.
+
+Ce fichier permet de mixer Tailwind et des styles CSS classiques pour personnaliser l'apparence globale de l'application.
+*/

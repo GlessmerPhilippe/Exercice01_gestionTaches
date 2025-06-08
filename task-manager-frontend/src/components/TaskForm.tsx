@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
+// Ce composant gère le formulaire d'ajout et de modification de tâche.
+// Il utilise des états locaux pour stocker les valeurs du formulaire.
+// Quand une tâche est sélectionnée pour modification, les champs sont pré-remplis.
+
 type Task = {
   id: number;
   title: string;
@@ -20,6 +24,7 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
   const [priority, setPriority] = useState<"low" | "medium" | "high">("medium");
   const [id, setId] = useState<number | null>(null);
 
+  // Remplit le formulaire si une tâche est à modifier, sinon réinitialise
   useEffect(() => {
     if (taskToEdit) {
       setTitle(taskToEdit.title);
@@ -32,6 +37,7 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
     }
   }, [taskToEdit]);
 
+  // Gère la soumission du formulaire (ajout ou modification)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title) return;
@@ -93,3 +99,12 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
     </form>
   );
 }
+
+// ---
+// Liste des fonctions/hooks utilisés dans ce composant :
+//
+// - useState : Hook React permettant de créer et gérer des états locaux dans le composant (ici pour title, priority, id).
+// - useEffect : Hook React qui permet d’exécuter du code après le rendu du composant ou lors de la modification de certaines valeurs (ici pour remplir ou réinitialiser le formulaire quand taskToEdit change).
+// - toast (de react-toastify) : Fonction pour afficher des notifications à l’utilisateur (ici pour signaler l’ajout ou la modification d’une tâche).
+//
+// Ces hooks facilitent la gestion dynamique des données et des effets de bord dans les composants fonctionnels React.
