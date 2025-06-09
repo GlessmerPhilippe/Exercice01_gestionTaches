@@ -65,7 +65,6 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
         setDescription(""); // Réinitialiser la description
       });
   };
-
   return (
     <form onSubmit={handleSubmit} className="mb-6 flex flex-col gap-4">
       {/* Titre */}
