@@ -23,6 +23,7 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState<"low" | "medium" | "high">("medium");
   const [id, setId] = useState<number | null>(null);
+  const [description, setDescription] = useState(""); // Ajout de l'état description
 
   // Remplit le formulaire si une tâche est à modifier, sinon réinitialise
   useEffect(() => {
@@ -30,10 +31,12 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
       setTitle(taskToEdit.title);
       setPriority(taskToEdit.priority);
       setId(taskToEdit.id);
+      setDescription(taskToEdit.description || ""); // Pré-remplir la description
     } else {
       setTitle("");
       setPriority("medium");
       setId(null);
+      setDescription(""); // Réinitialiser la description
     }
   }, [taskToEdit]);
 
@@ -50,7 +53,7 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
     fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, priority }),
+      body: JSON.stringify({ title, priority, description }), // Inclure la description
     })
       .then((res) => res.json())
       .then((data) => {
@@ -59,20 +62,31 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
         setTitle("");
         setPriority("medium");
         setId(null);
+        setDescription(""); // Réinitialiser la description
       });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mb-6 items-end flex-wrap">
+    <form onSubmit={handleSubmit} className="mb-6 flex flex-col gap-4">
+      {/* Titre */}
       <input
-        className="border border-gray-300 bg-gray-50 p-3 rounded w-full sm:w-auto flex-1 focus:ring focus:border-indigo-400 transition text-lg"
+        className="border border-gray-300 bg-gray-50 p-3 rounded w-full focus:ring focus:border-indigo-400 transition text-lg"
         placeholder="Titre de la tâche"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
       />
+      {/* Description */}
+      <textarea
+        className="border border-gray-300 bg-gray-50 p-3 rounded w-full focus:ring focus:border-indigo-400 transition text-lg"
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={2}
+      />
+      {/* Priorité */}
       <select
-        className="border border-gray-300 bg-gray-50 p-3 rounded focus:ring focus:border-indigo-400 transition text-lg"
+        className="border border-gray-300 bg-gray-50 p-3 rounded w-full focus:ring focus:border-indigo-400 transition text-lg"
         value={priority}
         onChange={(e) => setPriority(e.target.value as any)}
       >
@@ -80,22 +94,29 @@ export default function TaskForm({ onAdd, taskToEdit }: TaskFormProps) {
         <option value="medium">Moyenne</option>
         <option value="high">Haute</option>
       </select>
-      <button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded px-5 py-3 font-semibold shadow transition" type="submit">
-        {id ? "Modifier" : "Ajouter"}
-      </button>
-      {id && (
+      {/* Boutons */}
+      <div className="flex gap-2">
         <button
-          type="button"
-          onClick={() => {
-            setTitle("");
-            setPriority("medium");
-            setId(null);
-          }}
-          className="ml-2 px-4 py-2 bg-gray-200 text-gray-600 rounded hover:bg-gray-300"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white rounded px-5 py-3 font-semibold shadow transition"
+          type="submit"
         >
-          Annuler
+          {id ? "Modifier" : "Ajouter"}
         </button>
-      )}
+        {id && (
+          <button
+            type="button"
+            onClick={() => {
+              setTitle("");
+              setPriority("medium");
+              setId(null);
+              setDescription("");
+            }}
+            className="px-4 py-3 bg-gray-200 text-gray-600 rounded hover:bg-gray-300"
+          >
+            Annuler
+          </button>
+        )}
+      </div>
     </form>
   );
 }
